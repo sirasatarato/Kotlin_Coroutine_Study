@@ -14,3 +14,8 @@
 - Flow
 
 [코루틴 깃헙 주소](https://github.com/Kotlin/kotlinx.coroutines)
+
+## 참고
+[공식문서](https://kotlinlang.org/docs/reference/coroutines/coroutines-guide.html)  
+[코루틴 공식 가이드 읽고 분석하기](https://medium.com/@myungpyo/reading-coroutine-official-guide-thoroughly-part-0-20176d431e9d)  
+[코틀린 코루틴의 기초](https://medium.com/@limgyumin/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%98-%EA%B8%B0%EC%B4%88-cac60d4d621b)

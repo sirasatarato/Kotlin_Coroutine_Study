@@ -5,7 +5,7 @@
 > 이 문서는 코틀린의 코루틴을 학습하기 위한 목적으로 작성함
 
 ## 목록
-- 기초
+- [기초](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/Basics.md)
 - CoroutineScope
 - CoroutineContext
 - 코루틴 빌더

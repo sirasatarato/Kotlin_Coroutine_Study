@@ -25,3 +25,20 @@ JetBrains에선 경량 스레드(Light-Weighted-Thread)라고 불린다.
 코루틴간 전환시 Context Switch가 일어나지 않으며 루틴을 언제 실행, 종료할지 지정이 가능하다.  
 이렇게 생성한 루틴은 작업 전환 시에 OS의 영향을 받지 않아 그에 따른 비용이 발생하지 않는다.
 
+## 실제 코드
+```
+"Hello," 출력한 다음 1초 흐르고, "World!" 출력한 다음 2초가 지날 때 종료
+
+fun main() {
+    GlobalScope.launch {
+        delay(1000L)
+        println("World!")
+    }
+    println("Hello,")
+    Thread.sleep(2000L)
+}
+
+Hello,
+World!
+```
+

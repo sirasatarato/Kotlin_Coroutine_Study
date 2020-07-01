@@ -42,3 +42,8 @@ Hello,
 World!
 ```
 
+#### 코드 해설
+* GlobalScope: CoroutineScope 중 하나, 프로그램 전반에 걸처 백그라운드에서 실행
+* launch: Scope의 확장함수 또는 코루틴 빌더 중 하나, 코루틴을 실행하는 역할 담당
+* delay: 코루틴의 작업을 잠시 중지시키는 중단 함수, Thread.sleep과 역할이 같지만 중지시키는 대상이 다름
+

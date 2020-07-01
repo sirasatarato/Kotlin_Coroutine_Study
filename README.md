@@ -4,6 +4,9 @@
 ## 목적
 > 이 문서는 코틀린의 코루틴을 학습하기 위한 목적으로 작성함
 
+## 주의
+> 이 문서에 나오는 예제들은 코틀린으로 작성됨
+
 ## 목록
 - [기초](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/Basics.md)
 - CoroutineScope

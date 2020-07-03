@@ -78,3 +78,7 @@ fun main(args: Array<String>) = runBlocking {
 Hello,
 World!
 ```
+
+#### runBlocking 심화
+1. runBlocking 같은 코루틴 빌더는 현재 실행 중인 스레드가 호출될 시 코루틴 빌더가 실행됨.
+2. runBlocking은 작업 중인 **스레드를 차단하고 혼자 점유**하기 때문에 **남용을 하거나 안드로이드에서 사용하는 것을 권장하지 않습니다.**

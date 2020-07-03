@@ -49,3 +49,32 @@ World!
 
 ## 중단 함수(Blocking function)
 > 스레드를 멈추는 역할을 수행하는 함수
+
+## runBlocking
+> 중단함수를 코드상에서 명시적으로 나타내거나 일반적인 함수에서 중단 함수를 호출하기 위한 코루틴 빌더
+```
+// delay() 중단함수를 호출하기 위한 코드
+fun main() { 
+    GlobalScope.launch {
+        delay(1000L)
+        println("World!")
+    }
+    println("Hello,")
+    runBlocking {
+        delay(2000L)
+    } 
+}
+
+// 위와 같은 코드지만 보다 자연스럽게 나타낸 코드
+fun main(args: Array<String>) = runBlocking {
+    GlobalScope.launch {
+        delay(1000L)
+        println("World!")
+    }
+    println("Hello,")
+    delay(2000L)
+}
+
+Hello,
+World!
+```

@@ -9,7 +9,7 @@
 
 ## 목록
 - [기초](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/Basics.md)
-- CoroutineScope
+- [CoroutineScope](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/CoroutineScope.md)
 - CoroutineContext
 - 코루틴 빌더
 - 취소

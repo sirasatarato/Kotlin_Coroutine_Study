@@ -19,3 +19,16 @@ public interface CoroutineScope {
 즉, 빌더들은 CoroutineScope의 함수들인 것이고 
 이들이 코루틴을 생성할 때는 소속된 CoroutineScope 에 정의된 CoroutineContext 를 기반으로 필요한 코루틴들을 생성함.
 ```
+
+## GlobalScope
+```
+object GlobalScope : CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = EmptyCoroutineContext
+}
+```
+> GlobalScope는 싱글톤 object로서 EmptyCoroutineContext를 가지고 있다.
+
+- EmptyCoroutineContext: 구현해야할 CoroutineContext 멤버 함수들에 대해서 기본 구현을 한 컨텍스트 
+- 이 컨텍스트는 생명주기에 바인딩 된 Job 이 정의되어 있지 않기 때문에 애플리케이션 프로세스와 동일한 생명주기를 갖는다.
+

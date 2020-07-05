@@ -38,3 +38,11 @@ public interface Element : CoroutineContext {
 - EmptyCoroutineContext: 특별히 컨텍스트가 명시되지 않을 경우, 가장 기본적인 것들만 만들어진 컨텍스트
 - CombinedContext: 두 개 이상의 컨텍스트가 명시되면 컨텍스트 간 연결을 위한 컨테이너 역할을 하는 컨텍스트
 - Element: 컨텍트의 각 요소들도 CoroutineContext를 구현
+
+## + 연산자
+> 아래 이미지는 GlobalScope.launch{}를 수행할 때 launch 함수의 첫번째 파라미터인 CoroutineContext에 어떤 값을 넘기는지에 따라 변화하는 코루틴 컨텍스트의 상태를 나타낸다.
+
+<img src="https://miro.medium.com/max/1400/1*K9Ky5pV6CMvaULvaxenqIQ.png">
+
+각각의 요소를 + 연산자를 이용해 연결하고 있는데 Element + Element + … 는 결국 하나로 병합 된 CoroutineContext (e.g. CombinedContext)를 만든다.
+

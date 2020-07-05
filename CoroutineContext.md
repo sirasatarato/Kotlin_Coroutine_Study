@@ -34,3 +34,7 @@ public interface Element : CoroutineContext {
 > 코루틴 컨텍스트에는 코루틴 컨텍스트를 상속한 요소들이 등록될 수 있다.  
 각 요소들이 등록될 때는 요소의 고유한 키를 기반으로 등록된다.
 
+## 종류
+- EmptyCoroutineContext: 특별히 컨텍스트가 명시되지 않을 경우, 가장 기본적인 것들만 만들어진 컨텍스트
+- CombinedContext: 두 개 이상의 컨텍스트가 명시되면 컨텍스트 간 연결을 위한 컨테이너 역할을 하는 컨텍스트
+- Element: 컨텍트의 각 요소들도 CoroutineContext를 구현

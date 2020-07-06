@@ -57,3 +57,29 @@ Coroutine dispatcher는 코루틴의 실행을 특정 하나의 스레드에 한
 파일 읽고, 쓰고, 소켓을 읽고, 쓰고 작업을 멈추는것에 최적화되어 있다.
 - Dispatchers.Main: 프로그램 메인 스레드, 안드로이드의 경우 UI 스레드
 - [그외](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)
+
+```
+fun main(args: Array<String>) = runBlocking<Unit> {
+    launch {
+        // context of the parent, main runBlocking coroutine
+        println("main runBlocking      : I'm working in thread ${Thread.currentThread().name}")
+    }
+    launch(Dispatchers.Unconfined) {
+        // not confined -- will work with main thread
+        println("Unconfined            : I'm working in thread ${Thread.currentThread().name}")
+    }
+    launch(Dispatchers.Default) {
+        // will get dispatched to DefaultDispatcher
+        println("Default               : I'm working in thread ${Thread.currentThread().name}")
+    }
+    launch(newSingleThreadContext("MyOwnThread")) {
+        // will get its own new thread
+        println("newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}")
+    }
+}
+
+Unconfined : I’m working in thread main
+Default : I’m working in thread DefaultDispatcher-worker-2
+newSingleThreadContext: I’m working in thread MyOwnThread
+main runBlocking : I’m working in thread main
+```

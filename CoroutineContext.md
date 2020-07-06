@@ -83,3 +83,8 @@ Default : I’m working in thread DefaultDispatcher-worker-2
 newSingleThreadContext: I’m working in thread MyOwnThread
 main runBlocking : I’m working in thread main
 ```
+
+1. launch 빌더가 파라미터 없이 호출될 경우: 실행된 코루틴 스코프로부터 상속 받은 컨텍스트를 그대로 이용한다.
+2. Dispatchers.Unconfined: 호출 스레드에서 코루틴을 시작하지만  중단점 이후에 코루틴이 재개될 때는 중단 함수를 재개한 스레드에서 수행된다.
+3. Dispatchers.Default: 코루틴이 GlobalScope에서 실행될 경우에 사용되며 공통으로 사용되는 백그라운드 스레드 풀을 이용한다. 즉, launch(Dispatchers.Default)와 GlobalScope.launch는 동일한 디스패처를 사용한다.
+4. newSingleThreadContext: 새로운 스레드를 생성한다.

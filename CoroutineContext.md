@@ -46,3 +46,6 @@ public interface Element : CoroutineContext {
 
 각각의 요소를 + 연산자를 이용해 연결하고 있는데 Element + Element + … 는 결국 하나로 병합 된 CoroutineContext (e.g. CombinedContext)를 만든다.
 
+## Dispatchers
+> Dispatchers는 CoroutineContext를 상속받아 어떤 스레드를 이용해서 어떻게 동작할것인지를 미리 정의되었다.  
+Coroutine dispatcher는 코루틴의 실행을 특정 하나의 스레드에 한정 시킬 수 있고, thread pool 에 던질 수도 있고, 정의되지 않은채로 실행시킬 수 있다.

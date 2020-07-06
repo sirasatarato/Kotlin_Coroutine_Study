@@ -49,3 +49,11 @@ public interface Element : CoroutineContext {
 ## Dispatchers
 > Dispatchers는 CoroutineContext를 상속받아 어떤 스레드를 이용해서 어떻게 동작할것인지를 미리 정의되었다.  
 Coroutine dispatcher는 코루틴의 실행을 특정 하나의 스레드에 한정 시킬 수 있고, thread pool 에 던질 수도 있고, 정의되지 않은채로 실행시킬 수 있다.
+
+## 종류
+- Dispatchers.Default: CPU 사용량이 많은 작업에 사용한다.  
+메인 스레드에서 작업하기에는 너무 긴 작업에 적합하다.
+- Dispatchers.IO: 네트워크, 디스크 사용 할때 사용합니다.  
+파일 읽고, 쓰고, 소켓을 읽고, 쓰고 작업을 멈추는것에 최적화되어 있다.
+- Dispatchers.Main: 프로그램 메인 스레드, 안드로이드의 경우 UI 스레드
+- [그외](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html)

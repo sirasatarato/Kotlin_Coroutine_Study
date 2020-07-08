@@ -1,3 +1,10 @@
 # 코루틴 빌더
 > 사용된 코루틴스코프에 정의된 CoroutineContext 를 기반으로 필요한 코루틴을 생성한다.
 
+## 종류
+- launch
+- async
+- coroutineScope
+- withContext
+- etc...
+

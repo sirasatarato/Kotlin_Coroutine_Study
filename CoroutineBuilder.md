@@ -64,3 +64,18 @@ println("$result1 , $result2") // result1 , result 2 출력
 println("$result3") // result3 출력
 ```
 
+### 지연실행
+> launch 코루틴 블록과 async 코루틴 블록을 처리 시점을 뒤로 미룰수 있다.
+```
+val job = launch (start = CoroutineStart.LAZY) { ... }
+or
+val deferred = async (start = CoroutineStart.LAZY) { ... }
+
+job.start()
+or
+job.join()
+
+deferred.start()    // 블록의 수행 결과를 반환하지 않고 코루틴 블록이 완료 되는 것을 기다리지 않는다.
+deferred.await()
+```
+

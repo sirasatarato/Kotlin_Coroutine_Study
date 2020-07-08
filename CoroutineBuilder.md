@@ -8,3 +8,6 @@
 - withContext
 - etc...
 
+## launch
+- 반환형: Job
+- Job: launch로 실행된 코루틴 블록을 저장해서 제어 가능케 해주는 객체

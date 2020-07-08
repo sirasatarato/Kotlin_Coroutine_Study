@@ -29,3 +29,7 @@ or
 joinAll(job1, job2)
 ```
 
+## async
+- 반환형: Deferred
+- Deferred: async 실행된 코루틴 블록을 저장해서 제어 가능케 해주는 동시에 코루틴 블록에서 계산된 결과값을 반환 받을 수 있다.
+

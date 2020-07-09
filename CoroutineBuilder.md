@@ -79,3 +79,30 @@ deferred.start()    // 블록의 수행 결과를 반환하지 않고 코루틴 
 deferred.await()
 ```
 
+## coroutineScope
+> coroutineScope{ } 빌더: 어떤 코루틴들을 위한 사용자 정의 스코프가 필요한 경우에 사용  
+이 빌더를 통해 생성 된 코루틴은 모든 자식 코루틴들이 끝날때까지 종료되지 않는 스코프를 정의하는 코루틴이다.
+
+```
+fun main(args: Array<String>) = runBlocking {
+    launch {
+        delay(200L)
+        println("Task from runBlocking")
+    }
+
+    coroutineScope {
+        launch {
+            delay(500L)
+            println("Task from nested launch")
+        }
+        delay(100L)
+        println("Task from coroutine scope")
+    }
+    println("Coroutine scope is over")
+}
+
+Task from coroutine scope
+Task from runBlocking
+Task from nested launch
+Coroutine scope is over
+```

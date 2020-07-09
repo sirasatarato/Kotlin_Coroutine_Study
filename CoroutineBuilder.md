@@ -106,3 +106,39 @@ Task from runBlocking
 Task from nested launch
 Coroutine scope is over
 ```
+
+## withContext
+> withContext 함수는 로직이 담긴 코드블럭과 이것이 실행될 코루틴 컨텍스트를 함수의 인자로 받습니다.
+
+- NonCancellable: object 이므로 구현 객체이고 AbstractCoroutineContextElement를 상속하는 컨텍스트 요소
+  - isActive: NonCancellable 객체 안에 있는 isActive 함수는 항상 true를 반환한다.
+
+```
+fun main(args: Array<String>) = runBlocking {
+    val job = launch {
+        try {
+            repeat(1000) { i ->
+                println("I'm sleeping $i ...")
+                delay(500L)
+            }
+        } finally {
+            withContext(NonCancellable) {
+                delay(1000)
+                println("main : I'm running finally!")
+            }
+        }
+    }
+
+    delay(1300L)
+    println("main : I'm tired of waiting!")
+    job.cancelAndJoin()
+    println("main : Now I can quit.")
+}
+
+I'm sleeping 0 ...
+I'm sleeping 1 ...
+I'm sleeping 2 ...
+main : I'm tired of waiting!
+main : I'm running finally!
+main : Now I can quit.
+```

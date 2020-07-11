@@ -51,3 +51,23 @@ fun cancellationIsCooperative() = runBlocking {
 }
 ```
 
+## 취소가 가능한 코루틴 블록
+#### yield()
+> 해당 위치에서 코루틴의 취소 여부를 확인하는 함수
+
+```
+fun main(args: Array<String>) = runBlocking {
+    val job = launch(Dispatchers.Default) {
+        for (i in 1..10) {
+            yield()
+            println("I'm sleeping $i ...")
+            Thread.sleep(500L)
+        }
+    }
+
+    delay(1300L)
+    println("main : I'm tired of waiting!")
+    job.cancelAndJoin()
+    println("main : Now I can quit.")
+}
+```

@@ -174,3 +174,31 @@ class SleepingBed : Closeable {
     }
 }
 ```
+
+## 타임아웃
+> 해당 작업의 시간이 지정한 시간을 초과했을 경우 자동으로 취소되도록 하는 스코프 빌더
+
+```
+// withTimeout()함수는 첫번째 인자로 작업을 수행할 시간, 두번째 인자로 수행할 블록 함수를 받는다.
+작업 취소 시 TimeoutCancellationException이 발생한다.
+
+withTimeout(1300L) {
+    repeat(1000) { i ->
+        println("I'm sleeping $i ...")
+        delay(500L)
+    }
+}
+```
+```
+// 시간 내 정상 종료 시 값을 반환할 수도 있고, 만약 시간 내 처리되지 못한다면 null이 반환된다.
+
+val result = withTimeoutOrNull(1300L) {
+    repeat(1000) { i ->
+        println("I'm sleeping $i ...")
+        delay(500L)
+    }
+    "Done"
+}
+
+println("Result is $result")
+```

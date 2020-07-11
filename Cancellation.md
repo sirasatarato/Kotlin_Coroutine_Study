@@ -71,3 +71,25 @@ fun main(args: Array<String>) = runBlocking {
     println("main : Now I can quit.")
 }
 ```
+
+#### isActive
+> CoroutineScope의 Boolean 값의 확장 프로퍼티이며, 코루틴 블록이 아직 취소 되지 않았는지 상태를 가지는 속성
+
+```
+fun main(args: Array<String>) = runBlocking {
+    val job = launch(Dispatchers.Default) {
+        for (i in 1..10) {
+            if (!isActive) {
+                break
+            }
+            println("I'm sleeping $i ...")
+            Thread.sleep(500L)
+        }
+    }
+
+    delay(1300L)
+    println("main : I'm tired of waiting!")
+    job.cancelAndJoin()
+    println("main : Now I can quit.")
+}
+```

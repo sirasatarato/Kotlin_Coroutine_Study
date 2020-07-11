@@ -117,3 +117,31 @@ fun main(args: Array<String>) = runBlocking {
     println("main : Now I can quit.")
 }
 ```
+
+#### try-finally + withContext
+> 만약 finally에서 어떤 리소스 사용이 마무리를 대기해야 할시 kotlinx.coroutines 패키지의 중단함수를 finally문에서 사용하면 CancellationException이 발생한다.  
+이러한 동작이 반드시 필요한 경우 withContext()함수를 사용한다.
+
+```
+fun runNonCancellableBlock() = runBlocking {
+    val job = launch {
+        try {
+            repeat(1000) { i ->
+                println("job: I'm sleeping $i ...")
+                delay(500L)
+            }
+        } finally {
+            withContext(NonCancellable) {
+                println("job: I'm running finally")
+                delay(1000L)
+                println("job: And I've just delayed for 1 sec because I'm non-cancellable")
+            }
+        }
+    }
+  
+    delay(1300L)
+    println("main: I'm tired of waiting!")
+    job.cancelAndJoin()
+    println("main: Now I can quit.")
+}
+```

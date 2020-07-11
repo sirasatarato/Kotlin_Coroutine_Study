@@ -3,3 +3,51 @@
 만약 취소 됐다면 CancellationException을 발생시키며 종료한다.  
 kotlinx.coroutines 라이브러리의 모든 중단함수는 이러한 취소 요청에 대응 하도록 구현되어 있다.
 
+## Builder.cancel()
+```
+fun cancellingCoroutineExecution() = runBlocking {
+    val job = launch {
+        repeat(1000) { i ->
+            println("job: I'm sleeping $i ...")
+            delay(500L)
+        }
+    }
+    
+    delay(1300L)
+    println("main: I'm tired of waiting!")
+    job.cancel()
+    job.join()
+    // job.cancelAndJoin()
+    println("main: Now I can quit.")
+}
+
+job: I'm sleeping 0 ...
+job: I'm sleeping 1 ...
+job: I'm sleeping 2 ...
+main: I'm tired of waiting!
+main: Now I can quit.
+```
+
+> builder 함수로 객체를 생성 후, cancel()를 호출하면 취소할 수 있다. 하지만....
+
+```
+fun cancellationIsCooperative() = runBlocking {
+    val startTime = System.currentTimeMillis()
+    val job = launch(Dispatchers.Default) {
+        var nextPrintTime = startTime
+        var i = 0
+        while (i < 10) {
+            if (System.currentTimeMillis() >= nextPrintTime) {
+                println("job: I'm sleeping ${i++} ...")
+                nextPrintTime += 500L
+            }
+        }
+    }
+  
+    delay(1300L)
+    println("main: I'm tired of waiting!")
+    job.cancelAndJoin()
+    println("main: Now I can quit.")
+}
+```
+

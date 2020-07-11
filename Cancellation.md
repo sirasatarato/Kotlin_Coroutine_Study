@@ -93,3 +93,27 @@ fun main(args: Array<String>) = runBlocking {
     println("main : Now I can quit.")
 }
 ```
+
+## 코루틴 작업 취소 시 마무리 작업
+> 취소 가능한 중단함수들은 취소되면 CancellationException을 발생한다.
+
+#### try-finally
+```
+fun main(args: Array<String>) = runBlocking {
+    val job = launch {
+        try {
+            repeat(1000) { i ->
+                println("I'm sleeping $i ...")
+                delay(500L)
+            }
+        } finally {
+            println("main : I'm running finally!")
+        }
+    }
+
+    delay(1300L)
+    println("main : I'm tired of waiting!")
+    job.cancelAndJoin()
+    println("main : Now I can quit.")
+}
+```

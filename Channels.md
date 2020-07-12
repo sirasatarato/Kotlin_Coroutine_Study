@@ -17,3 +17,19 @@ fun main() = runBlocking {
 }
 ```
 
+## 닫기
+> 큐와 달리 채널은 닫을 수 있고, 닫힌 채널은 더이상 값이 전달되지 않는다.  
+channel.close()
+
+```
+fun main() = runBlocking {
+    val channel = Channel<Int>()
+    launch {
+        for (x in 1..5) channel.send(x * x)
+        channel.close()
+    }
+
+    for (y in channel) println(y)
+    println("Done!")
+}
+```

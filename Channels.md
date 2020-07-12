@@ -33,3 +33,22 @@ fun main() = runBlocking {
     println("Done!")
 }
 ```
+
+## 채널 프로듀서
+> 코루틴이 어떤 데이터 스트림을 생성해내는 일은 동시성 코드에서 흔히 접할 수 있던 producer-consumer 패턴의 일부 입니다.  
+이러한 프로듀서의 생성 작업을 추상화 하기 위해 채널을 파라미터로 전달받는 생성 함수로 만들 수 있다.  
+코루틴에서는 프로듀서의 생성 작업을 용이하게 하는 produce{ } 코루틴 빌더와 이렇게 생성된 프로듀서가 생성하는 값들의 수신을 돕는 consumeEach() 확장 함수를 제공한다.
+
+```
+fun main() = runBlocking {
+    val squares = produceSquares(5)
+    squares.consumeEach { println(it) }
+    println("Done")
+}
+
+fun CoroutineScope.produceSquares(max: Int): ReceiveChannel<Int> = produce {
+    for (x in 1..max) {
+        send(x * x)
+    }
+}
+```

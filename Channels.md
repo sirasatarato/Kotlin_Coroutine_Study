@@ -74,3 +74,29 @@ fun CoroutineScope.produceDouble(numbers: ReceiveChannel<Int>): ReceiveChannel<I
     numbers.consumeEach { send(it * 2) }
 }
 ```
+
+## Fan-out
+> 하나의 채널로 부터 두개 이상의 수신 코루틴들이 데이터를 분배하여 수신 받을 수 있다.
+
+```
+fun main() = runBlocking {
+    val producer = produceNumbers()
+    repeat(5) { launchProcessor(it, producer) }
+    delay(950L)
+    producer.cancel()
+}
+
+fun CoroutineScope.produceNumbers() = produce {
+    var x = 1
+    while (true) {
+        send(x++)
+        delay(100L)
+    }
+}
+
+fun CoroutineScope.launchProcessor(id: Int, channel: ReceiveChannel<Int>) = launch {
+    for (msg in channel) {
+        println("Processor #$id received $msg")
+    }
+}
+```

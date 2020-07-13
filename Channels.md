@@ -100,3 +100,25 @@ fun CoroutineScope.launchProcessor(id: Int, channel: ReceiveChannel<Int>) = laun
     }
 }
 ```
+
+## Fan-in
+> 두 개 이상의 코루틴들이 동일한 하나의 채널로 데이터를 전송할 수 있다.
+
+```
+fun main() = runBlocking {
+    val channel = Channel<String>()
+    launch { sendString(channel, "Foo", 200L) }
+    launch { sendString(channel, "Bar", 500L) }
+    repeat(6) {
+        println(channel.receive())
+    }
+    coroutineContext.cancelChildren()
+}
+
+suspend fun sendString(channel: SendChannel<String>, text: String, time: Long) {
+    while (true) {
+        delay(time)
+        channel.send(text)
+    }
+}
+```

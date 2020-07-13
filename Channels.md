@@ -122,3 +122,26 @@ suspend fun sendString(channel: SendChannel<String>, text: String, time: Long) {
     }
 }
 ```
+
+## Buffered channels
+> 송신이 먼저 일어나거나 수신이 먼저 일어나면 송수신자는 중단된다.  
+Channel\<T>() 팩토리 함수와 produce { } 빌더는 모두 capacity로 버퍼 사이즈를 설정할 수 있다.  
+버퍼는 송신자가 중단되기 전에 버퍼의 수용량만큼 더 송신할 수 있다.  
+단, 수용량의 최대치에 도달하면 송신자는 중단됩니다.
+
+```
+fun main() = runBlocking {
+    val channel = Channel<Int>(4)
+
+    val sender = launch {
+        repeat(10) {
+            print("Try to send $it : ")
+            channel.send(it)
+            print("Done\n")
+        }
+    }
+
+    delay(1000)
+    sender.cancel()
+}
+```

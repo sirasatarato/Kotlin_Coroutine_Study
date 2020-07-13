@@ -52,3 +52,25 @@ fun CoroutineScope.produceSquares(max: Int): ReceiveChannel<Int> = produce {
     }
 }
 ```
+
+## 파이프라인
+> 하나의 코루틴이 데이터 스트림을 생산해내고 다른 하나 이상의 코루틴들이 이 스트림을 수신 받아 필요한 작업을 수행 한 후 가공된 결과를 다시 전송하는 패턴
+
+```
+fun main() = runBlocking {
+    val numbers = produceNumbers(5)
+    val doubledNumbers = produceDouble(numbers)
+    doubledNumbers.consumeEach { println(it) }
+    println("Done")
+}
+
+fun CoroutineScope.produceNumbers(max: Int): ReceiveChannel<Int> = produce {
+    for (x in 1..max) {
+        send(x)
+    }
+}
+
+fun CoroutineScope.produceDouble(numbers: ReceiveChannel<Int>): ReceiveChannel<Int> = produce {
+    numbers.consumeEach { send(it * 2) }
+}
+```

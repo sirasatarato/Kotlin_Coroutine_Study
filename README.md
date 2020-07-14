@@ -14,7 +14,7 @@
 - [코루틴 빌더](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/CoroutineBuilder.md)
 - [취소](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/Cancellation.md)
 - [채널](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/Channels.md)
-- Exception Handling
+- [Exception Handling](https://github.com/sirasatarato/Kotlin_Coroutine_Study/blob/master/ExceptionHandling.md)
 - Flow
 
 [코루틴 깃헙 주소](https://github.com/Kotlin/kotlinx.coroutines)

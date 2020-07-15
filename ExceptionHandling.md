@@ -62,3 +62,68 @@ fun main() = runBlocking {
 Caught java.lang.AssertionError
 ```
 
+## 취소와 예외
+> 코루틴은 내부적으로 취소하기 위해서 CancellationException을 사용하는데,  
+이런 예외들은 모든 핸들러들이 무시하므로 catch 블록을 이용하여 부가적인 디버깅 정보 용으로만 사용될 수 있다.  
+
+```
+fun main() = runBlocking {
+    val job = launch {
+        val child = launch {
+            try {
+                delay(Long.MAX_VALUE)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                println("Child is cancelled")
+            }
+        }
+        yield()
+        println("Cancelling child")
+        child.cancel()
+        child.join()
+        yield()
+        println("Parent is not cancelled")
+    }
+    job.join()
+}
+
+Cancelling child
+Child is cancelled
+Parent is not cancelled
+kotlinx.coroutines.JobCancellationException: StandaloneCoroutine was cancelled; job=StandaloneCoroutine{Cancelling}@26aa12dd
+```
+
+> 만약 코루틴이 CancellationException이외의 예외를 만나면 부모를 취소시키게 된다. 이러한 것을 방지하기 위해 핸들러를 사용한다.
+
+```
+fun main() = runBlocking {
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println("Caught $exception")
+    }
+    val job = GlobalScope.launch(handler) {
+        launch {
+            try {
+                delay(Long.MAX_VALUE)
+            } finally {
+                withContext(NonCancellable) {
+                    println("Children are cancelled, but exception is not handled until all children terminate")
+                    delay(100)
+                    println("The first child finished its non cancellable block")
+                }
+            }
+        }
+        launch {
+            delay(10)
+            println("Second child throws an exception")
+            throw ArithmeticException()
+        }
+    }
+    job.join()
+}
+
+Second child throws an exception
+Children are cancelled, but exception is not handled until all children terminate
+The first child finished its non cancellable block
+Caught java.lang.ArithmeticException
+```

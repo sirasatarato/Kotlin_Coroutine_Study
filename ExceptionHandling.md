@@ -37,3 +37,28 @@ fun main() = runBlocking {
     }
 }
 ```
+
+## 코루틴 예외 핸들러
+> CoroutineExceptionHandler 컨텍스트 요소를 로깅이나 예외처리를 위한 코루틴의 범용적인 예외 처리 블록으로 사용할 수 있다.
+
+- CoroutineExceptionHandler: JVM에서 ServiceLoader를 통해 등록함으로서 모든 코루틴들을 위한 범용 예외 처리 핸들러를 재정의 할 수 있다.
+- uncaughtExceptionPreHandler: Android에 설치된 범용 코루틴 예외 처리기
+
+```
+fun main() = runBlocking {
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println("Caught $exception")
+    }
+    val job = GlobalScope.launch(handler) {
+        throw AssertionError()
+    }
+    val deferred = GlobalScope.async(handler) {
+        throw ArithmeticException()
+    }
+
+    joinAll(job, deferred)
+}
+
+Caught java.lang.AssertionError
+```
+

@@ -127,3 +127,7 @@ Children are cancelled, but exception is not handled until all children terminat
 The first child finished its non cancellable block
 Caught java.lang.ArithmeticException
 ```
+
+## 감독
+> 취소는 전체 코루틴 계층을 통해 전파되는 양방향 관계이다.  
+하지만 단방향 취소가 필요한 경우, 예를들어 UI 컴포넌트가 종료되면 모든 자식들의 Job도 취소된다.

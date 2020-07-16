@@ -166,3 +166,28 @@ First child is cancelled: true, but second one is still active
 Cancelling supervisor
 Second child is cancelled because supervisor is cancelled
 ```
+
+#### 감독 범위
+> 취소를 단방향으로 전파하며 오직 자신이 실패했을때만 모든 자식을 취소하는 스코프
+
+```
+fun main() = runBlocking {
+    try {
+        supervisorScope {
+            launch {
+                try {
+                    println("Child is sleeping")
+                    delay(Long.MAX_VALUE)
+                } finally {
+                    println("Child is cancelled")
+                }
+            }
+            yield()
+            println("Throwing exception from scope")
+            throw AssertionError()
+        }
+    } catch(e: AssertionError) {
+        println("Caught assertion error")
+    }
+}
+```

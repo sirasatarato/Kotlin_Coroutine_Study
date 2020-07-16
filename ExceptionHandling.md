@@ -191,3 +191,28 @@ fun main() = runBlocking {
     }
 }
 ```
+
+#### 감독중인 코루틴들에서의 예외
+> 일반적인 Job 과 Supervisor Job의 중요한 차이점은 예외 처리 방식이다.  
+각각의 자식은 예외처리 매커니즘을 통해서 각자의 예외를 처리한다는 점은 동일하지만 자식의 예외가 부모로 전파되지 않는다는 차이점이 있다.
+
+```
+fun main() = runBlocking {
+    val handler = CoroutineExceptionHandler { _, exception ->
+        println("Caught $exception")
+    }
+    supervisorScope {
+        launch(handler) {
+            println("Child throws an exception")
+            throw AssertionError()
+        }
+        println("Scope is completing")
+    }
+    println("Scope is completed")
+}
+
+Scope is completing
+Child throws an exception
+Caught java.lang.AssertionError
+Scope is completed
+```

@@ -131,3 +131,38 @@ Caught java.lang.ArithmeticException
 ## 감독
 > 취소는 전체 코루틴 계층을 통해 전파되는 양방향 관계이다.  
 하지만 단방향 취소가 필요한 경우, 예를들어 UI 컴포넌트가 종료되면 모든 자식들의 Job도 취소된다.
+
+#### 감독 작업
+> 일반적인 Job과 유사하지만 예외로 인한 취소가 아래 방향(부모 -> 자식)으로만 전파된다.
+
+```
+fun main() = runBlocking {
+    val supervisor = SupervisorJob()
+    with(CoroutineScope(coroutineContext + supervisor)) {
+        val firstChild = launch(CoroutineExceptionHandler { _, _ ->  }) {
+            println("First child is failing")
+            throw AssertionError("First child is cancelled")
+        }
+
+        val secondChild = launch {
+            firstChild.join()
+            println("First child is cancelled: ${firstChild.isCancelled}, but second one is still active")
+            try {
+                delay(Long.MAX_VALUE)
+            } finally {
+                println("Second child is cancelled because supervisor is cancelled")
+            }
+        }
+
+        firstChild.join()
+        println("Cancelling supervisor")
+        supervisor.cancel()
+        secondChild.join()
+    }
+}
+
+First child is failing
+First child is cancelled: true, but second one is still active
+Cancelling supervisor
+Second child is cancelled because supervisor is cancelled
+```

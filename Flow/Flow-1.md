@@ -32,3 +32,19 @@ fun main() {
 
 1 2 3 
 ```
+
+#### 중단 함수
+> 중단 함수를 코루틴 스코프에서 호출 하여 메인 스레드의 정지 없이 실행할 수 있고 그 결과를 리스트로 반환한다.
+
+```
+suspend fun foo(): List<Int> {
+    delay(1000)
+    return listOf(1, 2, 3)
+}
+
+fun main() = runBlocking {
+    foo().forEach { value -> print("$value ") }
+}
+
+1 2 3 
+```

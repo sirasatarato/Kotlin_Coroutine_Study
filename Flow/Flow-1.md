@@ -14,3 +14,21 @@ fun main() {
 
 1 2 3 
 ```
+
+#### 시퀀스
+> CPU 연산이 요구되는 연산을 바로 수행하지 않고 나중에 처리함으로서 CPU 효율을 높이는 객체
+
+```
+fun foo(): Sequence<Int> = sequence {
+    for (i in 1..3) {
+        Thread.sleep(100)
+        yield(i)
+    }
+}
+
+fun main() {
+    foo().forEach { value -> print("$value ") }
+}
+
+1 2 3 
+```

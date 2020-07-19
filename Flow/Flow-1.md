@@ -85,3 +85,30 @@ Calling collect again...
 Flow started 1 2 3 
 ```
 
+## 플로우 취소
+> 플로우는 코루틴의 취소 매커니즘을 준수하지만  
+플로우 인프라스트럭쳐는 부가적으로 취소 지점을 제공하는 기능은 없다.  
+플로우가 취소 가능한 중단함수에서 중단 되었을 때만 취소 가능하다.
+
+```
+fun foo(): Flow<Int> = flow {
+    for (i in 1..3) {
+        delay(100)
+        println("Emitting $i")
+        emit(i)
+    }
+}
+
+fun main() = runBlocking {
+    withTimeoutOrNull(250) { 
+        foo().collect { value -> println(value) }
+    }
+    println("Done")
+}
+
+Emitting 1
+1
+Emitting 2
+2
+Done
+```

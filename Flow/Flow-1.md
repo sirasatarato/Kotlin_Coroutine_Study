@@ -48,3 +48,10 @@ fun main() = runBlocking {
 
 1 2 3 
 ```
+
+**이전 예제와 Flow와의 차이점**
+1. Flow 타입을 생성은flow {} 빌더를 이용
+2. flow { ... } 블록 안의 코드는 중단 가능
+3. foo() 함수는 더이상 suspend 로 마킹 되지 않음
+4. 결과 값들은 flow 에서 emit() 함수를 이용하여 방출됨
+5. flow 에서 방출된 값들은 collect 함수를 이용하여 수집됨

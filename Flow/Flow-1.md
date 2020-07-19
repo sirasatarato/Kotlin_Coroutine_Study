@@ -55,3 +55,33 @@ fun main() = runBlocking {
 3. foo() 함수는 더이상 suspend 로 마킹 되지 않음
 4. 결과 값들은 flow 에서 emit() 함수를 이용하여 방출됨
 5. flow 에서 방출된 값들은 collect 함수를 이용하여 수집됨
+
+## 콜드 스트림
+> 플로우는 콜드 스트림이다.  
+flow{} 빌더 내부의 코드 블록은 플로우가 수집되기 전까지는 실행되지 않는다.
+
+```
+fun foo(): Flow<Int> = flow {
+    print("Flow started ")
+    for (i in 1..3) {
+        delay(100)
+        emit(i)
+    }
+}
+
+fun main() = runBlocking {
+    println("Calling foo...")
+    val flow = foo()
+    println("Calling collect...")
+    flow.collect { value -> print("$value ") }
+    println("\nCalling collect again...")
+    flow.collect { value -> print("$value ") }
+}
+
+Calling foo...
+Calling collect...
+Flow started 1 2 3 
+Calling collect again...
+Flow started 1 2 3 
+```
+

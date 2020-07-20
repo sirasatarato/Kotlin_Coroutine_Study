@@ -121,3 +121,28 @@ Done
 ```
 (1..3).asFlow().collect { value -> println(value) }
 ```
+
+## 연산자
+#### 플로우 중간 연산자
+> 플로우도 연산자를 사용할 수 있다.  
+중간 연산자는 업스트림 플로우에 적용되어 다운스트림 플로우를 반환하며 콜드 타입으로 동작한다.  
+중간 연산자의 호출은 중단 함수가 아니므로 새롭게 변형된 플로우를 즉시 반환한다.  
+시퀀스와의 차이점은 이 연산자들로 수행되는 코드 블록에서 중단 함수들을 호출 할 수 있다는 점이다.
+
+```
+suspend fun performRequest(request: Int): String {
+    delay(1000)
+    return "response $request"
+}
+
+fun main() = runBlocking {
+    (1..3).asFlow()
+            .map { request -> performRequest(request) }
+            .collect { response -> println(response) }
+}
+
+response 1
+response 2
+response 3
+```
+

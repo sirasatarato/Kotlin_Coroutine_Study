@@ -146,3 +146,31 @@ response 2
 response 3
 ```
 
+#### 변환 연산자
+> transform 연산자는 map처럼 단순한 변환이나 혹은 복잡한 다른 변환들을 구현하기 위해 사용한다.  
+transform 연산자를 사용하여 임의의 횟수로 임의의 값들을 방출할 수 있다.  
+
+
+```
+suspend fun performRequest(request: Int): String {
+    delay(1000)
+    return "response $request"
+}
+
+fun main() = runBlocking {
+    (1..3).asFlow()
+            .transform { request ->
+                emit("Making request $request")
+                emit(performRequest(request))
+            }
+            .collect { response -> println(response) }
+}
+
+Making request 1
+response 1
+Making request 2
+response 2
+Making request 3
+response 3
+```
+

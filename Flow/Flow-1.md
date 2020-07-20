@@ -202,3 +202,21 @@ fun main() = runBlocking {
 Finally in numbers
 ```
 
+#### 플로우 종단 연산자
+> 종단 연산자는 플로우 수집을 시작하는 중단 함수이다.  
+collect 연산자가 가장 대표적인 연산자이며, 다음과 같이 수집을 용이하게 해주기 위한 다른 종단 연산자들도 존재한다.
+
+- toList나 toSet 같은 다양한 컬렉션으로의 변환
+- 첫 번째 값만 방출하며 플로우는 단일 값만 방출함을 보장
+- 플로우를 reduce나 fold를 이용하여 값으로 변환
+
+```
+fun main() = runBlocking {
+    val sum = (1..5).asFlow()
+            .map { it * it }
+            .reduce { a, b -> a + b }
+    println(sum)
+}
+
+55
+```

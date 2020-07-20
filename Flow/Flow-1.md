@@ -174,3 +174,31 @@ Making request 3
 response 3
 ```
 
+#### 크기 제한 연산자
+> take같은 크기 제한 중간 연산자는 정의된 크기를 초과하면 실행을 취소한다.   
+
+```
+// 아래 예제에서 예외가 발생한 이유는 코루틴에서 취소는 언제나 예외를 발생시키는 방식으로 수행하기 때문이다.
+
+fun numbers(): Flow<Int> = flow {
+    try {
+        emit(1)
+        emit(2)
+        println("This line will not execute")
+        emit(3)
+    } finally {
+        println("Finally in numbers")
+    }
+}
+
+fun main() = runBlocking {
+    numbers()
+            .take(2)
+            .collect { value -> println(value) }
+}
+
+1
+2
+Finally in numbers
+```
+

@@ -220,3 +220,32 @@ fun main() = runBlocking {
 
 55
 ```
+
+## Flows are sequential
+>플로우는 다중 플로우가 사용되는 특별한 연산자가 사용되지 않는 이상 순차적으로 수행된다.  
+수집은 종단 연산자를 호출한 코루틴에서 직접 수행되며 기본적으로 새로운 코루틴을 생성하지 않는다.  
+각각의 방출된 값은 업스트림의 모든 중간 연산자들에 의해 처리되어 다운스트림으로 전달되며 마지막으로 종단 연산자로 전달된다.
+
+```
+(1..5).asFlow()
+            .filter {
+                println("Filter $it")
+                it % 2 == 0
+            }
+            .map {
+                println("Map $it")
+                "string $it"
+            }.collect {
+                println("Collect $it")
+            }
+
+Filter 1
+Filter 2
+Map 2
+Collect string 2
+Filter 3
+Filter 4
+Map 4
+Collect string 4
+Filter 5
+```

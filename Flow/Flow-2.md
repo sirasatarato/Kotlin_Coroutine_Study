@@ -25,3 +25,21 @@ main Collected 2
 main Collected 3
 ```
 
+## withContext를 통한 잘못 된 방출
+> withContext는 코루틴을 사용하는 코드에서 컨텍스트를 전환하기 위해서 사용된다.  
+하지만 flow{} 빌더 내부의 코드는 컨텍스트 보존 특성을 지켜야하기 때문에 다른 컨텍스트에서 값을 방출하는 것이 허용되지 않는다.
+
+```
+fun foo(): Flow<Int> = flow {
+    withContext(Dispatchers.Default) {
+        for (i in 1..3) {
+            Thread.sleep(100)
+            emit(i)
+        }
+    }
+}
+
+fun main() = runBlocking {
+    foo().collect { value -> println(value) }
+}
+```

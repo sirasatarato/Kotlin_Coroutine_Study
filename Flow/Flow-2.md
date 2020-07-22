@@ -43,3 +43,27 @@ fun main() = runBlocking {
     foo().collect { value -> println(value) }
 }
 ```
+
+## flowOn 연산자
+> 플로우에서 컨텍스트 전환을 동작해주는 연산자
+
+```
+fun foo(): Flow<Int> = flow {
+    for (i in 1..3) {
+        Thread.sleep(100)
+        log("Emitting $i")
+        emit(i)
+    }
+}.flowOn(Dispatchers.Default)
+
+fun main() = runBlocking {
+    foo().collect { value -> log("Collected $value") }
+}
+
+DefaultDispatcher-worker-1 Emitting 1
+main Collected 1
+DefaultDispatcher-worker-1 Emitting 2
+main Collected 2
+DefaultDispatcher-worker-1 Emitting 3
+main Collected 3
+```

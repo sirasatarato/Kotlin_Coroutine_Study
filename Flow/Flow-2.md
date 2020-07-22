@@ -67,3 +67,32 @@ main Collected 2
 DefaultDispatcher-worker-1 Emitting 3
 main Collected 3
 ```
+
+## 버퍼링
+> buffer 연산자는 방출 코드가 수집 코드와 동시에 수행되도록 만들어 주는 연산자
+
+```
+fun foo(): Flow<Int> = flow {
+    for (i in 1..3) {
+        delay(100)
+        emit(i)
+    }
+}
+
+fun main() = runBlocking {
+    val time = measureTimeMillis {
+        foo()
+                .buffer()
+                .collect { value ->
+                    delay(300)
+                    println(value)
+                }
+    }
+    println("Collected in $time ms")
+}
+
+1
+2
+3
+Collected in 1100 ms
+```

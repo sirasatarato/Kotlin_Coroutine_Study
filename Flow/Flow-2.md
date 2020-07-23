@@ -199,3 +199,23 @@ fun requestFlow(i: Int): Flow<String> = flow {
 3: First at 1351 ms from start
 3: Second at 1852 ms from start
 ```
+
+## flatMapMerge
+> 코드 블록은 순차적으로 호출하지만 그 결과 플로우들은 동시에 수집하는 연산자
+
+```
+val startTime = System.currentTimeMillis()
+    (1..3).asFlow().onEach { delay(100) }
+            .flatMapMerge { requestFlow(it) }
+            .collect { value ->
+                println("$value at ${System.currentTimeMillis() - startTime} ms from start")
+            }
+        
+
+1: First at 202 ms from start
+2: First at 284 ms from start
+3: First at 387 ms from start
+1: Second at 704 ms from start
+2: Second at 785 ms from start
+3: Second at 891 ms from start
+```

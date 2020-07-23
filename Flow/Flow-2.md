@@ -117,3 +117,24 @@ fun main() = runBlocking {
 3
 Collected in 788 ms
 ```
+
+## 최신 값 처리
+> xxxLatest 연산자는 새로운 값이 방출될 때 마다 느린 수집기를 취소하고 재시작할 수 있도록 새로운 값이 방출되면 그들의 코드블록을 취소시키는 연산자
+
+```
+val time = measureTimeMillis {
+    foo()
+        .collectLatest { value ->
+            println("Collecting $value") 
+            delay(300)
+            println("Done $value") 
+        } 
+}   
+println("Collected in $time ms")
+
+Collecting 1
+Collecting 2
+Collecting 3
+Done 3
+Collected in 716 ms
+```

@@ -172,3 +172,30 @@ val nums = (1..3).asFlow().onEach { delay(300) }
 3 -> two at 985 ms from start
 3 -> three at 1292 ms from start
 ```
+
+## flatMapConcat
+> 다음 플로우의 수집을 시작하기 전에 현재 플로우가 완료될 때까지 기다리는 연산자
+
+```
+fun main() = runBlocking {
+    val startTime = System.currentTimeMillis()
+    (1..3).asFlow().onEach { delay(100) }
+            .flatMapConcat { requestFlow(it) }
+            .collect { value ->
+                println("$value at ${System.currentTimeMillis() - startTime} ms from start")
+            }
+}
+
+fun requestFlow(i: Int): Flow<String> = flow {
+    emit("$i: First")
+    delay(500)
+    emit("$i: Second")
+}
+
+1: First at 143 ms from start
+1: Second at 646 ms from start
+2: First at 747 ms from start
+2: Second at 1249 ms from start
+3: First at 1351 ms from start
+3: Second at 1852 ms from start
+```

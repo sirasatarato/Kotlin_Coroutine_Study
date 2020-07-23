@@ -153,3 +153,22 @@ val nums = (1..3).asFlow()
 2 -> two
 3 -> three
 ```
+
+#### Combine
+> combine 연산자는 어떤 플로우가 어떤 연산이나 상태의 최근 값을 나타낼 때, 그 플로우의 최근 값에 추가 연산을 수행하거나 또는 별도의 업스트림 플로우가 값을 방출할 때마다 다시 그 추가 연산을 수행해야 할 수 있다.
+
+```
+val nums = (1..3).asFlow().onEach { delay(300) }
+    val strs = flowOf("one", "two", "three").onEach { delay(400) }
+    val startTime = System.currentTimeMillis()
+    nums.combine(strs) { a, b -> "$a -> $b" }
+            .collect { value ->
+                println("$value at ${System.currentTimeMillis() - startTime} ms from start")
+            }
+
+1 -> one at 470 ms from start
+2 -> one at 684 ms from start
+2 -> two at 890 ms from start
+3 -> two at 985 ms from start
+3 -> three at 1292 ms from start
+```

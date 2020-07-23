@@ -219,3 +219,20 @@ val startTime = System.currentTimeMillis()
 2: Second at 785 ms from start
 3: Second at 891 ms from start
 ```
+
+## flatMapLatest
+> 새로운 플로우가 방출될 때마다 직전 플로우를 취소하는 연산자
+
+```
+val startTime = System.currentTimeMillis()
+    (1..3).asFlow().onEach { delay(100) }
+            .flatMapLatest  { requestFlow(it) }
+            .collect { value ->
+                println("$value at ${System.currentTimeMillis() - startTime} ms from start")
+            }
+
+1: First at 190 ms from start
+2: First at 296 ms from start
+3: First at 397 ms from start
+3: Second at 899 ms from start
+```

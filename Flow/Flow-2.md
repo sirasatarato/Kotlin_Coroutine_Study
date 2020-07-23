@@ -96,3 +96,24 @@ fun main() = runBlocking {
 3
 Collected in 1100 ms
 ```
+
+## 병합
+> conflate 연산자는 수집기의 처리가 너무 느릴 경우, 방출 된 중간 값들을 스킵하는 연산자
+
+```
+fun main() = runBlocking {
+    val time = measureTimeMillis {
+        foo()
+                .conflate()
+                .collect { value ->
+                    delay(300)
+                    println(value)
+                }
+    }
+    println("Collected in $time ms")
+}
+
+1
+3
+Collected in 788 ms
+```

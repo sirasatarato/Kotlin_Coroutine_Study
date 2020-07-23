@@ -138,3 +138,18 @@ Collecting 3
 Done 3
 Collected in 716 ms
 ```
+
+## 다중 플로우 합성
+#### zip
+> 두개의 플로우들의 값들을 병합하는 연산자
+
+```
+val nums = (1..3).asFlow()
+    val strs = flowOf("one", "two", "three")
+    nums.zip(strs) { a, b -> "$a -> $b" }
+            .collect { println(it) }
+
+1 -> one
+2 -> two
+3 -> three
+```

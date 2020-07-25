@@ -58,3 +58,25 @@ string 1
 Emitting 2 
 Caught java.lang.IllegalStateException: Crashed on 2
 ```
+
+#### catch 예외 투명성
+> 예외 투명성을 지키는 catch 중간 연산자는 오직 업 스트림에서 발생하는 예외들에 대해서만 동작하며 다운 스트림에서 발생한 예외에 대해서는 처리하지 않는다.
+
+```
+fun foo(): Flow<Int> = flow {
+    for (i in 1..3) {
+        println("Emitting $i")
+        emit(i)
+    }
+}
+
+fun main() = runBlocking<Unit> {
+    foo()
+        .catch { e -> println("Caught $e") } // does not catch downstream exceptions
+        .collect { value ->
+            check(value <= 1) { "Collected $value" }                 
+            println(value) 
+        }
+}      
+```
+

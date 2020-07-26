@@ -138,3 +138,33 @@ fun main() = runBlocking<Unit> {
 }
 ```
 
+## 플로우 실행
+> 어떤 소스로부터 발생하는 비동기 이벤트는 플로우를 통해 쉽게 표현할 수 았다.   
+이러한 경우를 위해서 일반적으로 들어오는 이벤트들에 대응하는 처리 코드를 addEventListener를 통해 등록하고 이후 필요한 일을 진행해 가는 방식을 사용하곤 하는데 플로우 에서는onEach 연산자가 대신한다.  
+하지만 onEach 는 중간 연산자이기 때문에 플로우 수집을 시작시키기 위해서 종단 연산자가 필요하다.  
+
+```
+(1..3).asFlow().onEach { delay(100) }
+        .onEach { event -> println("Event: $event") }
+        .collect()
+println("Done")
+
+Event: 1 
+Event: 2 
+Event: 3 
+Done
+```
+
+> launchIn 종단 연산자는 플로우의 수집을 다른 코루틴에서 수행할 수 있게하는 연산자
+
+```
+(1..3).asFlow().onEach { delay(100) }
+        .onEach { event -> println("Event: $event") }
+        .launchIn(this)
+println("Done")
+
+Done
+Event: 1
+Event: 2
+Event: 3
+```

@@ -80,3 +80,6 @@ fun main() = runBlocking<Unit> {
 }      
 ```
 
+## 플로우 종료
+> 플로우의 수집이 종료되면 그 이후 동작을 수행해야 할 수 있습니다.  
+이는 Imperative 방식과 Declarative 방식으로 구현한다.

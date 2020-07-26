@@ -83,3 +83,24 @@ fun main() = runBlocking<Unit> {
 ## 플로우 종료
 > 플로우의 수집이 종료되면 그 이후 동작을 수행해야 할 수 있습니다.  
 이는 Imperative 방식과 Declarative 방식으로 구현한다.
+
+#### Imperative finally block
+> 수집할 때 try/catch에 추가적으로 수집 종료 시 실행할 코드를 finally 블록을 통해 정의할 수 있다.
+
+```
+fun foo(): Flow<Int> = (1..3).asFlow()
+
+fun main() = runBlocking {
+    try {
+        foo().collect { value -> println(value) }
+    } finally {
+        println("Done")
+    }
+}
+
+1 
+2 
+3 
+Done
+```
+

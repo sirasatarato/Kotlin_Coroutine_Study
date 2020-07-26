@@ -104,3 +104,37 @@ fun main() = runBlocking {
 Done
 ```
 
+#### Declarative handling
+> onCompletion 연산자는 catch와는 달리 예외를 처리하지는 않는다.  
+예외는 여전히 다운 스트림으로 전달되고 결국 onCompletion 연산자를 거쳐 catch 연산자로 처리된다.
+
+```
+fun foo(): Flow<Int> = flow {
+    emit(1)
+    throw RuntimeException()
+}
+
+fun main() = runBlocking {
+    foo()
+        .onCompletion { cause -> if (cause != null) println("Flow completed exceptionally") }
+        .catch { cause -> println("Caught exception") }
+        .collect { value -> println(value) }
+}
+```
+
+- 업 스트림 예외에 국한됨
+> catch 연산자와 동일하게 onCompletion연산자도 업 스트림에서 전달되는 예외만 식별하고 처리할 수 있으며 다운 스트림의 예외는 알지 못한다.
+
+```
+fun foo(): Flow<Int> = (1..3).asFlow()
+
+fun main() = runBlocking<Unit> {
+    foo()
+        .onCompletion { cause -> println("Flow completed with $cause") }
+        .collect { value ->
+            check(value <= 1) { "Collected $value" }                 
+            println(value) 
+        }
+}
+```
+
